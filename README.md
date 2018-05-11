@@ -7,4 +7,4 @@ Trying out:
   - [x] use apollo cache to rerun queries after an update has returned a response
 
 
-See this [Launchpad] (https://launchpad.graphql.com/nxv4x9xxn7) for the linked graphql server
+See this [Launchpad](https://launchpad.graphql.com/nxv4x9xxn7) for the linked graphql server

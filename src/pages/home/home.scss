@@ -1,3 +1,41 @@
 page-home {
-
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    .examiner {
+        font-weight: bold;
+        margin: 5px 0;
+    }
+    .info {
+        background: #eee;
+        position: relative;
+        min-height: 60px;
+        padding: 5px;
+        .slot {
+            margin: 5px 10px;
+        }
+        .candidate {
+            margin: 5px 10px;
+            span {
+                font-weight: bold;
+                width: 50%;
+                background: #ddd;
+                display: block;
+                margin: 10px 0;
+                padding: 10px;
+                &.pass {
+                    background: #00d600;
+                }
+                &.fail {
+                    background: #ff3e3e
+                }
+            }
+        }
+    }
+    .submit {
+        right: 5px;
+        position: absolute;
+        top: 8px;
+    }
 }

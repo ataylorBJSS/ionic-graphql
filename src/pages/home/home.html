@@ -7,8 +7,31 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ul>
+    <li *ngFor="let examiner of examiners | async">
+      <div class="examiner">
+        Examiner - {{ examiner.firstName}} {{ examiner.lastName }}
+      </div>
+      <ul>
+        <li class="info" *ngFor="let slot of examiner.slots">
+          <div class="slot">
+            Slot - time: {{ slot.time}}, type: {{ slot.type }}
+          </div>
+          <div class="candidate" *ngIf="slot.candidate !== null">
+            candidate: {{ slot.candidate.firstName }} {{ slot.candidate.lastName }}, license Num: {{ slot.candidate.licenseNum }}
+            <span *ngIf="slot.candidate.pass" class="pass">
+              test Result: PASS
+            </span>
+            <span *ngIf="!slot.candidate.pass" class="fail">
+              test Result: FAIL
+            </span>
+          </div>
+          <div *ngIf="slot.candidate" class="submit">
+            <button ion-button color="danger" (click)="setTestResult(examiner.id, slot, false)">Fail</button>
+            <button ion-button color="secondary" (click)="setTestResult(examiner.id, slot, true)">Pass</button>
+          </div>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </ion-content>

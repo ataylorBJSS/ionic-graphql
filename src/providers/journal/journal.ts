@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Apollo } from "apollo-angular";
 import { map } from "rxjs/operators";
 
-import { Query } from "./../../app/type";
+import { Query } from "./type";
 import { ResultMutation as ResultMut } from "./mutations";
 import { Examiners as ExaminerQry } from "./queries";
 

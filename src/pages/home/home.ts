@@ -1,5 +1,5 @@
 import { JournalProvider } from "./../../providers/journal/journal";
-import { Examiner } from "./../../app/type";
+import { Examiner } from "./../../providers/journal/type";
 import { Component } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 

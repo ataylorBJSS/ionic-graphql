@@ -1,5 +1,5 @@
+import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
 import "rxjs/add/observable/fromPromise";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
@@ -7,8 +7,11 @@ import "rxjs/add/operator/mergeMap";
 // import { Query } from "./type";
 import { updateCandidate } from "./mutations";
 import { Examiners as ExaminerQry } from "./queries";
+import { onUpdateCandidate } from "./subscriptions";
 
 import { default as AWSAppSyncClient } from "aws-appsync";
+
+import { ObservableQuery } from "apollo-client";
 
 import AWSConfig from "../../app/aws-config";
 
@@ -22,10 +25,11 @@ const {
 @Injectable()
 export class JournalProvider {
   client: any;
+  observedQuery: ObservableQuery<any>;
 
   constructor() {
     // create client
-    this.client = new AWSAppSyncClient({
+    const newClient = new AWSAppSyncClient({
       url,
       region,
       auth: {
@@ -33,13 +37,15 @@ export class JournalProvider {
         apiKey
       }
     });
+
+    this.client = newClient.hydrated();
   }
 
   /**
    * Get Observable for all Examiners
    */
-  getAllExaminers(): Observable<any> {
-    return Observable.fromPromise(this.client.hydrated()).mergeMap(client => {
+  getAllExaminers() {
+    return Observable.fromPromise(this.client).mergeMap(client => {
       return client
         .query({ query: ExaminerQry })
         .then(result => {
@@ -56,14 +62,19 @@ export class JournalProvider {
    * @param Object containing ids for reference (might be a better way to do this!)
    * @param testResult Boolean
    */
-  setTestResult({ eId, sId, cId }, pass) {
-    this.client.hydrated().then(client => {
+  setTestResult(cId, pass) {
+    this.client.then(client => {
       client.mutate({
         mutation: updateCandidate,
         variables: {
           id: cId,
           pass
-        }
+        },
+        refetchQueries: [
+          {
+            query: ExaminerQry
+          }
+        ]
       });
     });
   }

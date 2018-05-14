@@ -8,7 +8,7 @@
 
 <ion-content padding>
   <ul>
-    <li *ngFor="let examiner of examiners | async">
+    <li *ngFor="let examiner of examiners">
       <div class="examiner">
         Examiner - {{ examiner.firstName}} {{ examiner.lastName }}
       </div>
@@ -27,8 +27,8 @@
             </span>
           </div>
           <div *ngIf="slot.candidate" class="submit">
-            <button ion-button color="danger" (click)="setTestResult(examiner.id, slot, false)">Fail</button>
-            <button ion-button color="secondary" (click)="setTestResult(examiner.id, slot, true)">Pass</button>
+            <button ion-button color="danger" (click)="setTestResult(slot.candidate.id, false)">Fail</button>
+            <button ion-button color="secondary" (click)="setTestResult(slot.candidate.id, true)">Pass</button>
           </div>
         </li>
       </ul>

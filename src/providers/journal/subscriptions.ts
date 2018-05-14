@@ -1,9 +1,12 @@
 import gql from "graphql-tag";
 
-export const updateCandidate = gql`
-  mutation updateCandidate($cId: Int!, $testResult: Boolean) {
-    updateCandidate(candidateId: $cId, result: $testResult) {
+export const onUpdateCandidate = gql`
+  subscription onUpdateCandidate {
+    onUpdateCandidate {
       id
+      firstName
+      LastName
+      licenseNum
       pass
     }
   }

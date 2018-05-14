@@ -2,20 +2,21 @@ import gql from "graphql-tag";
 
 export const Examiners = gql`
   query {
-    examiners {
-      id
-      firstName
-      lastName
-      slots {
-        id
-        time
-        type
-        candidate {
+    listExaminers {
+      examiners {
+        firstName
+        lastName
+        slots {
           id
-          firstName
-          lastName
-          licenseNum
-          pass
+          time
+          type
+          candidate {
+            id
+            firstName
+            lastName
+            licenseNum
+            pass
+          }
         }
       }
     }

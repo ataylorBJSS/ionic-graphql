@@ -30,16 +30,16 @@
     "apollo-cache-inmemory": "^1.2.1",
     "apollo-client": "^2.3.1",
     "apollo-link": "^1.2.2",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "express-graphql": "^0.6.12",
+    "aws-appsync": "^1.0.19",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "rxjs": "5.5.10",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.26"
+    "zone.js": "0.8.26",
+    "apollo-link-http": "^1.2.0",
+    "aws-sdk": "^2.141.0"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.9",

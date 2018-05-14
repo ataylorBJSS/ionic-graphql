@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
-export const ResultMutation = gql`
-  mutation setResult($cId: Int!, $testResult: Boolean) {
-    setResult(candidateId: $cId, result: $testResult) {
+export const updateCandidate = gql`
+  mutation updateCandidate($id: Int!, $pass: Boolean) {
+    updateCandidate(input: { id: $id, pass: $pass }) {
       id
       pass
     }

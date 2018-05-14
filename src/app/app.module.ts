@@ -6,12 +6,11 @@ import { StatusBar } from "@ionic-native/status-bar";
 
 import { MyApp } from "./app.component";
 import { HomePage } from "../pages/home/home";
-import { GraphQLModule } from "./graphql.module";
-import { JournalProvider } from '../providers/journal/journal';
+import { JournalProvider } from "../providers/journal/journal";
 
 @NgModule({
   declarations: [MyApp, HomePage],
-  imports: [BrowserModule, IonicModule.forRoot(MyApp), GraphQLModule],
+  imports: [BrowserModule, IonicModule.forRoot(MyApp)],
   bootstrap: [IonicApp],
   entryComponents: [MyApp, HomePage],
   providers: [

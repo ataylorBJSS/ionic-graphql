@@ -20,6 +20,7 @@ export class HomePage {
       id: sId,
       candidate: { id: cId }
     } = slot;
+
     this.journal.setTestResult({ eId, sId, cId }, result);
   }
 }

@@ -1,22 +1,54 @@
 import { Injectable } from "@angular/core";
-import { Apollo } from "apollo-angular";
-import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
+import "rxjs/add/observable/fromPromise";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/mergeMap";
 
-import { Query } from "./type";
-import { ResultMutation as ResultMut } from "./mutations";
+// import { Query } from "./type";
+import { updateCandidate } from "./mutations";
 import { Examiners as ExaminerQry } from "./queries";
+
+import { default as AWSAppSyncClient } from "aws-appsync";
+
+import AWSConfig from "../../app/aws-config";
+
+const {
+  graphqlEndpoint: url,
+  region,
+  authenticationType: authType,
+  apiKey
+} = AWSConfig;
 
 @Injectable()
 export class JournalProvider {
-  constructor(private apollo: Apollo) {}
+  client: any;
+
+  constructor() {
+    // create client
+    this.client = new AWSAppSyncClient({
+      url,
+      region,
+      auth: {
+        type: authType,
+        apiKey
+      }
+    });
+  }
 
   /**
    * Get Observable for all Examiners
    */
-  getAllExaminers() {
-    return this.apollo
-      .watchQuery<Query>({ query: ExaminerQry })
-      .valueChanges.pipe(map(result => result.data.examiners));
+  getAllExaminers(): Observable<any> {
+    return Observable.fromPromise(this.client.hydrated()).mergeMap(client => {
+      return client
+        .query({ query: ExaminerQry })
+        .then(result => {
+          console.log("data", result.data);
+
+          return result.data.listExaminers.examiners;
+        })
+        .catch(err => console.log("err", err));
+    });
   }
 
   /**
@@ -24,47 +56,15 @@ export class JournalProvider {
    * @param Object containing ids for reference (might be a better way to do this!)
    * @param testResult Boolean
    */
-  setTestResult({ eId, sId, cId }, testResult) {
-    this.apollo
-      .mutate({
-        mutation: ResultMut,
+  setTestResult({ eId, sId, cId }, pass) {
+    this.client.hydrated().then(client => {
+      client.mutate({
+        mutation: updateCandidate,
         variables: {
-          cId,
-          testResult
-        },
-        update: (store, { data: { setResult: result } }) => {
-          this.updateStore(store, result, sId, eId);
+          id: cId,
+          pass
         }
-      })
-      .subscribe(
-        ({ data }) => {
-          console.log("got data", data);
-        },
-        error => {
-          console.log("there was an error sending the query", error);
-        }
-      );
-  }
-
-  /**
-   * Update cache store with new updates
-   * this fires off a new examiner query that updates the UI with results
-   * @param store   cache store
-   * @param updates candidate test updates
-   * @param sId     slot Id
-   * @param eId     examiner Id
-   */
-  updateStore(store, updates, sId, eId) {
-    const data = store.readQuery({
-      query: ExaminerQry
+      });
     });
-
-    const candidate = data.examiners
-      .find(examiner => examiner.id === eId)
-      .slots.find(slot => slot.id === sId).candidate;
-
-    candidate.pass = updates.pass;
-
-    store.writeQuery({ query: ExaminerQry, data });
   }
 }

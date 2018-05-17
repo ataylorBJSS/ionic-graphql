@@ -1,8 +1,7 @@
 import { Observable } from "rxjs/Observable";
+import { fromPromise } from "rxjs/observable/fromPromise";
+import { mergeMap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
-import "rxjs/add/observable/fromPromise";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/mergeMap";
 
 // import { Query } from "./type";
 import { updateCandidate } from "./mutations";
@@ -25,7 +24,8 @@ const {
 @Injectable()
 export class JournalProvider {
   client: any;
-  observedQuery: ObservableQuery<any>;
+  client$: Observable<any>;
+  examiners$: ObservableQuery<any>;
 
   constructor() {
     // create client
@@ -39,22 +39,8 @@ export class JournalProvider {
     });
 
     this.client = newClient.hydrated();
-  }
 
-  /**
-   * Get Observable for all Examiners
-   */
-  getAllExaminers() {
-    return Observable.fromPromise(this.client).mergeMap(client => {
-      return client
-        .query({ query: ExaminerQry })
-        .then(result => {
-          console.log("data", result.data);
-
-          return result.data.listExaminers.examiners;
-        })
-        .catch(err => console.log("err", err));
-    });
+    this.client$ = fromPromise(this.client);
   }
 
   /**

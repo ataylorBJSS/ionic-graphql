@@ -39,8 +39,7 @@
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.26",
     "apollo-link-http": "^1.2.0",
-    "aws-sdk": "^2.141.0",
-    "ws": "^3.3.1"
+    "aws-sdk": "^2.141.0"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.9",

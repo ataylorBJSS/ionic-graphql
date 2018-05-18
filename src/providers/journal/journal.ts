@@ -56,6 +56,14 @@ export class JournalProvider {
           id: cId,
           pass
         },
+        optimisticResponse: {
+          __typename: "Mutation",
+          updateCandidate: {
+            id: cId,
+            __typename: "Candidate",
+            pass
+          }
+        },
         refetchQueries: [
           {
             query: ExaminerQry
